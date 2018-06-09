@@ -1,0 +1,50 @@
+[
+ {
+   "name": "sword",
+   "path": "src/Resources/ColorPoition.png",
+   "tag": "1",
+   "level": "0",
+   "hp": "0",
+   "attack": "10",
+   "def": "0",
+   "critical": "20",
+   "breakArmor": "0",
+   "blockChance": "0"
+ },
+ {
+   "name": "shield",
+   "path": "src/Resources/ColorPoition.png",
+   "tag": "2",
+   "level": "0",
+   "hp": "0",
+   "attack": "0",
+   "def": "10",
+   "critical": "0",
+   "breakArmor": "0",
+   "blockChance": "10"
+ },
+ {
+   "name": "sword 2",
+   "path": "src/Resources/ColorPoition.png",
+   "tag": "1",
+   "level": "0",
+   "hp": "0",
+   "attack": "15",
+   "def": "0",
+   "critical": "20",
+   "breakArmor": "0",
+   "blockChance": "0"
+ },
+ {
+   "name": "shield 2",
+   "path": "src/Resources/ColorPoition.png",
+   "tag": "2",
+   "level": "0",
+   "hp": "0",
+   "attack": "0",
+   "def": "15",
+   "critical": "0",
+   "breakArmor": "0",
+   "blockChance": "20"
+ }
+]
