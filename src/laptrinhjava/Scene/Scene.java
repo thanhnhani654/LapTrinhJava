@@ -22,7 +22,9 @@ public abstract class Scene {
         S_chosehero,
         S_village,
         S_inventory,
-        S_Dungeon
+        S_Dungeon,
+        S_Stats,
+        S_Shop
     }
     
     protected eSceneId id;
@@ -43,11 +45,10 @@ public abstract class Scene {
         SceneManager.getInstance().addScene(this);
     }
     
-    public void active()
-    {
-        bActive = true;
-        
-    }
+    public abstract void active();
+//    {
+//        bActive = true;        
+//    }
     
     public void deActive()
     {

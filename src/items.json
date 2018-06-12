@@ -13,7 +13,7 @@
  },
  {
    "name": "shield",
-   "path": "src/Resources/ColorPoition.png",
+   "path": "src/Resources/ColorPoition2.png",
    "tag": "2",
    "level": "0",
    "hp": "0",
@@ -25,7 +25,7 @@
  },
  {
    "name": "sword 2",
-   "path": "src/Resources/ColorPoition.png",
+   "path": "src/Resources/NPC1.png",
    "tag": "1",
    "level": "0",
    "hp": "0",
@@ -37,7 +37,7 @@
  },
  {
    "name": "shield 2",
-   "path": "src/Resources/ColorPoition.png",
+   "path": "src/Resources/NPC2.png",
    "tag": "2",
    "level": "0",
    "hp": "0",

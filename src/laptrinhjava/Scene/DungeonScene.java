@@ -18,6 +18,7 @@ import laptrinhjava.GButton;
 import GameObject.GameObject;
 import Component.TurnBaseSystem;
 import UI.TopUi;
+import java.util.Random;
 /**
  *
  * @author Nhan
@@ -31,11 +32,13 @@ public class DungeonScene extends Scene {
     Gate gate;
     int idCount = 1;
     TopUi topUI;
+    Random rd;
     
     protected List<GameObject> listObject = new ArrayList<GameObject>();
     
     public DungeonScene ()
     {
+        rd = new Random();
         id = Scene.eSceneId.S_Dungeon;
         backGround = new ImageDraw("src/Resources/BackGround.png",0,0,WidthSize, HeightSize);
         bottomBackground = new ImageDraw("src/Resources/BottomBackground.png",0,HeightSize - 100,WidthSize, 100);
@@ -53,10 +56,13 @@ public class DungeonScene extends Scene {
         //gate = new Gate(6,i,1);
         //gate.setExitGate();
         TurnBaseSystem.getInstance().resetKey();
-        createGate(false, new Int2(4,0));
-        createEnemy(Tag.eTag.T_enemy, new Int2(2,1));
-        createWall(Tag.eTag.T_wall, new Int2(1,1));
+        createDungeon(player.getCharacter().level.getLevel());
         //System.out.println("DUNEGEON KEY" + TurnBaseSystem.getInstance().key[1].free);
+    }
+    
+    public void active()
+    {
+        bActive = true;
     }
     
     
@@ -140,10 +146,39 @@ public class DungeonScene extends Scene {
     }
     
     //Moi dungeon co 2 Gate
-    public void createGate(boolean isDownGate, Int2 pos)
+    public void createGate(boolean bDownGate, Int2 pos)
     {
         Gate gate = new Gate(pos.x,pos.y, idCount);
+        if (bDownGate)
+            gate.setDownGate();
+        else
+            gate.setExitGate();
         idCount++;
         listObject.add(gate);
+    }
+    
+    public void createDungeon(int level)
+    {
+        switch (level)
+        {
+            case 1:
+                createGate(false, randomGoodPosition());
+                createGate(true, randomGoodPosition());
+                createEnemy(Tag.eTag.T_enemy, randomGoodPosition());
+                createWall(Tag.eTag.T_wall, randomGoodPosition());
+                break;
+        }
+    }
+    
+    public Int2 randomGoodPosition()
+    {
+        while (true)
+        {
+            int x = rd.nextInt(8);
+            int y = rd.nextInt(4);
+            if(!GGrid.getInst().getTile(x, y).isHasTag(Tag.eTag.T_none) || (x == player.getCharacter().getPosition().x && y == player.getCharacter().getPosition().y) || (x == 0 && y == 0))
+                continue;
+            return new Int2(x,y);
+        }
     }
 }

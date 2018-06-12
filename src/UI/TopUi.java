@@ -13,12 +13,14 @@ import java.awt.Graphics;
 public class TopUi {
     HpBar hpBar;
     MpBar mpBar;
+    ExpBar expBar;
     private static TopUi inst;
     
     public TopUi(Player player)
     {
         hpBar = new HpBar(player.getHp());
         mpBar = new MpBar(player.getMp());
+        expBar = new ExpBar(player.hero.level);
     }
     
     public static TopUi getInst()
@@ -34,11 +36,13 @@ public class TopUi {
     {
         hpBar.Update();
         mpBar.Update();
+        expBar.Update();
     }
     
     public void Draw (Graphics g)
     {
         hpBar.Draw(g);
         mpBar.Draw(g);
+        expBar.Draw(g);
     }
 }

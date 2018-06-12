@@ -23,6 +23,20 @@ public class ImageDraw {
     
     public ImageDraw(String path, int x, int y, int width, int height)
     {
+        Initialize(path, x,y,width,height);
+    }
+
+    public IntRect getPosRect() {
+        return posRect;
+    }
+    
+    public ImageDraw (ImageDraw image)
+    {
+        Initialize(image.getPath(),image.getPosRect().x, image.posRect.y, image.getPosRect().width, image.getPosRect().height);
+    }
+    
+    private void Initialize(String path, int x, int y, int width, int height)
+    {
         this.path = path;
         try
         {

@@ -12,7 +12,6 @@ import UI.BottomMenu;
 import UI.ItemSlot;
 import Utility.Int2;
 import Component.GGrid;
-import Component.ItemCarrier;
 import java.util.ArrayList;
 import java.util.List;
 import Component.ItemCarrier;
@@ -28,12 +27,22 @@ import Utility.ItemManager;
  */
 public class InventoryScene extends Scene {
     
+    private static InventoryScene inst;
+    public static InventoryScene getInstance()
+    {
+        if (inst == null)
+            inst = new InventoryScene();
+        return inst;
+    }
+    
+    
     GButton exitButton;
     public static List<ItemSlot> listItemInvenSlot = new ArrayList<ItemSlot>();
     private ItemCarrier itemCarrier;
     ItemComponent colorPoition;
     ItemComponent colorPoition2;
     ItemComponent testItem;
+    ItemComponent testItem2;
     public ItemSlot weapon;
     public ItemSlot shield;
     public ItemSlot armor;
@@ -74,7 +83,6 @@ public class InventoryScene extends Scene {
         backGround = new ImageDraw("src/Resources/InventoryBackground.png",0,0,WidthSize,HeightSize);
         id = Scene.eSceneId.S_inventory;
         exitButton = new GButton("src/Resources/ExitInventory.png",750,551, 50,50);
-        exitButton.debugid = 2;
         for (int i = 0 ;  i < 6; i++)
         {
             for (int j = 0; j < 4; j++)
@@ -86,15 +94,15 @@ public class InventoryScene extends Scene {
             }
         }
         itemCarrier = ItemCarrier.getInst();
-        colorPoition = new ItemComponent("Color Poition", "src/Resources/ColorPoition.png", ItemComponent.eItemTag.IT_amulet);
+        colorPoition = new ItemComponent("Color Poition", "src/Resources/ColorPoition.png", ItemComponent.eItemTag.IT_consumable);
         colorPoition2 = new ItemComponent("Color Poition2", "src/Resources/ColorPoition2.png", ItemComponent.eItemTag.IT_shield);
         listItemInvenSlot.get(0).pushItem(colorPoition);
         listItemInvenSlot.get(1).pushItem(colorPoition2);
         //TestItem De Xem chi so o day///////////////////////////////////////////////////////
         //TestItem De Xem chi so o day///////////////////////////////////////////////////////
         //TestItem De Xem chi so o day///////////////////////////////////////////////////////
-        testItem = ItemManager.getInstance().createItem("sword");
-        listItemInvenSlot.get(2).pushItem(testItem);
+        TestItem1();
+        TestItem2();
         //Equipment Slot
         weapon = new ItemSlot();
         weapon.setPosition(new Int2(94,108));
@@ -111,6 +119,8 @@ public class InventoryScene extends Scene {
         //Stat Display
         InitializeStatDisplay();
         InitializeItemStatsDisplay();
+        if (inst == null)
+            inst = this;
     }
     
     public boolean isActive()
@@ -122,17 +132,11 @@ public class InventoryScene extends Scene {
     public void active()
     {        
         bActive = true;
-        Att.bActive = true;
-        Def.bActive = true;
-        Crit.bActive = true;
-        BreArmor.bActive = true;
-        Block.bActive = true;
+        activeStat();
+        activeItemStat();
         exitButton.active();
         System.out.println("Inventory Scene Actived");
-        for (ItemSlot l : listItemInvenSlot)
-        {
-             l.active();
-        }
+        ItemSlotActive();
         //Equipment Slot
         weapon.active();
         armor.active();
@@ -143,17 +147,11 @@ public class InventoryScene extends Scene {
     public void deActive()
     {
         bActive = false;
-        Att.bActive = false;
-        Def.bActive = false;
-        Crit.bActive = false;
-        BreArmor.bActive = false;
-        Block.bActive = false;
+        deActiveStat();
+        deActiveItemStat();
         exitButton.deActive();
         System.out.println(exitButton.isActive());
-        for (ItemSlot l : listItemInvenSlot)
-        {
-            l.deActive();
-        }
+        ItemSlotDeActive();
         weapon.deActive();
         armor.deActive();
         shield.deActive();
@@ -206,9 +204,7 @@ public class InventoryScene extends Scene {
         shield.Update();
         amulet.Update();
         
-        itemCarrier.getEventReleased(Game.bMouseReleased);
-        itemCarrier.getMousePos(Game.mousePos);
-        itemCarrier.Update();
+        ItemCarrierUpdating();
         
         
         if (exitButton.IsClicked())
@@ -230,20 +226,52 @@ public class InventoryScene extends Scene {
         backGround.Draw(g);
         IconStatsDrawing(g);
         ItemIconStatsDrawing(g);
-        for (ItemSlot l : listItemInvenSlot)
-        {
-            l.Draw(g);
-        }
+        ItemSlotDrawing(g);
         weapon.Draw(g);
         armor.Draw(g);
         shield.Draw(g);
         amulet.Draw(g);
         
-        itemCarrier.Draw(g);
+        ItemCarrierDrawing(g);
         exitButton.drawButton(g);
     }
     
-    private void InitializeStatDisplay()
+    public void ItemCarrierDrawing(Graphics g)
+    {
+        itemCarrier.Draw(g);
+    }
+    
+    public void ItemCarrierUpdating()
+    {
+        itemCarrier.getEventReleased(Game.bMouseReleased);
+        itemCarrier.getMousePos(Game.mousePos);
+        itemCarrier.Update();
+    }
+    
+    public void ItemSlotDrawing(Graphics g)
+    {
+        for (ItemSlot l : listItemInvenSlot)
+        {
+            l.Draw(g);
+        }
+    }
+    
+    public void ItemSlotActive()
+    {
+        for (ItemSlot l : listItemInvenSlot)
+        {
+             l.active();
+        }
+    }
+    public void ItemSlotDeActive()
+    {
+        for (ItemSlot l : listItemInvenSlot)
+        {
+             l.deActive();
+        }
+    }
+    
+    public void InitializeStatDisplay()
     {
         Att = NumberComponent.createNumber( Integer.toString((int)player.getCharacter().getStatsComponent().getDamage()), 450, 20, 1,1);
         Def = NumberComponent.createNumber( Integer.toString((int)player.getCharacter().getStatsComponent().getArmor()), 450, 60);
@@ -257,7 +285,25 @@ public class InventoryScene extends Scene {
         icoBlock = new ImageDraw("src/Resources/icoBlock.png", 620,20,25,25);
     }
     
-    private void IconStatsDrawing(Graphics g)
+    public void activeStat()
+    {
+        Att.bActive = true;
+        Def.bActive = true;
+        Crit.bActive = true;
+        BreArmor.bActive = true;
+        Block.bActive = true;
+    }
+    
+    public void deActiveStat()
+    {
+        Att.bActive = false;
+        Def.bActive = false;
+        Crit.bActive = false;
+        BreArmor.bActive = false;
+        Block.bActive = false;
+    }
+    
+    public void IconStatsDrawing(Graphics g)
     {
         icoAttack.Draw(g);
         icoDef.Draw(g);
@@ -266,7 +312,7 @@ public class InventoryScene extends Scene {
         icoBlock.Draw(g);
     }
     
-    private void InitializeItemStatsDisplay()
+    public void InitializeItemStatsDisplay()
     {                   
         IHp = NumberComponent.createNumber("0", 60, 310, 1,1);
         IAtt = NumberComponent.createNumber("0", 60, 350, 1,1);
@@ -282,7 +328,27 @@ public class InventoryScene extends Scene {
         IicoBlock = new ImageDraw("src/Resources/icoBlock.png", 30,510,25,25);
     }
     
-    private void UpdateItemStatsDisplay()
+    public void activeItemStat()
+    {
+        IHp.bActive = true;
+        IAtt.bActive = true;
+        IDef.bActive = true;
+        ICrit.bActive = true;
+        IBreArmor.bActive = true;
+        IBlock.bActive = true;
+    }
+    
+    public void deActiveItemStat()
+    {
+        IHp.bActive = false;
+        IAtt.bActive = false;
+        IDef.bActive = false;
+        ICrit.bActive = false;
+        IBreArmor.bActive = false;
+        IBlock.bActive = false;
+    }
+    
+    public void UpdateItemStatsDisplay()
     {
         if (selectItemStats == null)
             return;
@@ -295,7 +361,7 @@ public class InventoryScene extends Scene {
         
     }
     
-    private void ItemIconStatsDrawing(Graphics g)
+    public void ItemIconStatsDrawing(Graphics g)
     {
         if (selectItemImage != null)
         {
@@ -307,6 +373,18 @@ public class InventoryScene extends Scene {
         IicoCrit.Draw(g);
         IicoBreak.Draw(g);
         IicoBlock.Draw(g);
+    }
+    
+    public void TestItem1()
+    {
+        testItem = ItemManager.getInstance().createItem("sword");
+        listItemInvenSlot.get(22).pushItem(testItem);
+    }
+    
+    public void TestItem2()
+    {
+        testItem2 = ItemManager.getInstance().createItem("shield 2");
+        listItemInvenSlot.get(23).pushItem(testItem2);
     }
 }
 

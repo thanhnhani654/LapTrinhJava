@@ -25,6 +25,11 @@ public class StartScene extends Scene {
         startButton = new GButton("src/Resources/ButtonStart.png",350,250,75,56);
     }
     
+    public void active()
+    {
+        bActive = true;
+    }
+    
     public void destroy()
     {
         deleted = true;

@@ -17,6 +17,8 @@ public class Tag {
         T_wall,
         T_gate,
         T_enemy,
-        T_enemy2
+        T_enemy2,
+        T_statNPC,
+        T_shopNPC
     }
 }

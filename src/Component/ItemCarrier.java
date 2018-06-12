@@ -25,12 +25,13 @@ public class ItemCarrier {
         return inst;
     }
     
-    ItemComponent item;
+    public ItemComponent item;
     ImageDraw image;
     ItemSlot itemSlot;
     boolean bClicked = false;
     boolean bReleased = false;
     Int2 mousePos;
+    public int amount;
     
     public ItemCarrier ()
     {}
@@ -66,7 +67,7 @@ public class ItemCarrier {
         return this.item;
     }
     
-    public void putItem(ItemComponent item, ItemSlot itemSlot)
+    public void putItem(ItemComponent item, ItemSlot itemSlot, int amount)
     {
         if (this.item != null)
         {
@@ -76,6 +77,7 @@ public class ItemCarrier {
         this.item = item;
         image = this.item.getImage();
         this.itemSlot = itemSlot;
+        this.amount = amount;
     }
     
     public void getEventReleased(boolean iEvent)

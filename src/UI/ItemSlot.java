@@ -15,6 +15,8 @@ import java.awt.Graphics;
 import laptrinhjava.ImageDraw;
 import Component.ItemCarrier;
 import GameObject.Player;
+import Component.NumberComponent;
+import Component.NumberManager;
 /**
  *
  * @author Nhan
@@ -22,8 +24,9 @@ import GameObject.Player;
 public class ItemSlot {
     ItemComponent.eItemTag tag;
     ItemComponent.eItemTag specialTag;
-    public ItemComponent item;
+    public ItemComponent item;    
     int amount;
+    NumberComponent displayAmount;
 
     public GButton getButton() {
         return button;
@@ -48,6 +51,7 @@ public class ItemSlot {
         item = null;
         amount = 0;
         listItemSlot.add(this);
+        displayAmount = NumberComponent.createNumber("0", getPosition().x, getPosition().y);
     }
     
     public void setSpecialTag(ItemComponent.eItemTag tag)
@@ -61,7 +65,7 @@ public class ItemSlot {
     }
     
     public boolean isActive()
-    {
+    {        
         return bActive;
     }
     
@@ -69,12 +73,14 @@ public class ItemSlot {
     {
         button.active();
         bActive = true;
+        displayAmount.bActive = true;
     }
     
     public void deActive()
     {
         button.deActive();
         bActive = false;
+        displayAmount.bActive = false;
     }
     
     public ItemComponent getItem ()
@@ -85,8 +91,14 @@ public class ItemSlot {
     //Dua Item vao trong Slot thong qua ItemCarrier
     public boolean pushItem(ItemCarrier itemCarrier)
     {
+        int tempAmount = itemCarrier.amount;
         if (this.item != null && this.item.isHasTag(ItemComponent.eItemTag.IT_consumable))
         {
+            if (itemCarrier.item.isHasTag(ItemComponent.eItemTag.IT_consumable))
+            {
+                amount += itemCarrier.amount;
+                itemCarrier.getOutItem();
+            }
             return false;
         }
         
@@ -96,7 +108,7 @@ public class ItemSlot {
             if (this.specialTag == ItemComponent.eItemTag.IT_none)
             {
                 this.item = itemCarrier.getOutItem();
-                amount = 1;
+                amount = itemCarrier.amount;
                 button.setImage(item.getImage());
             }
             else
@@ -143,7 +155,7 @@ public class ItemSlot {
         }
         else
         {
-            amount ++;
+            amount += tempAmount;
         }
         return true;
     }
@@ -179,7 +191,7 @@ public class ItemSlot {
         try 
         {
             ItemComponent tempItem = (ItemComponent)this.item.clone();
-            itemCarrier.putItem(tempItem, this);
+            itemCarrier.putItem(tempItem, this, amount);
         } catch (CloneNotSupportedException e)
         {}
         if (this.specialTag == ItemComponent.eItemTag.IT_weapon ||
@@ -192,10 +204,17 @@ public class ItemSlot {
         this.item = null;
         button.setImage(image);
         tag = ItemComponent.eItemTag.IT_none;
-        
+        amount = 0;
         
         return true;
     }  
+    
+    public void RemoveItem()
+    {
+        item = null;
+        tag = ItemComponent.eItemTag.IT_none;
+        amount = 0;
+    }
     
     public void setPosition(Int2 pos)
     {
@@ -228,6 +247,22 @@ public class ItemSlot {
 //        {
 //           
 //        }
+        if (this.item != null)
+            if (this.item.isHasTag(ItemComponent.eItemTag.IT_consumable))
+            {
+                displayAmount.bActive = true;
+                displayAmount.updateText(Integer.toString(amount));
+                displayAmount.setPos(getPosition().x, getPosition().y);
+            }
+            else
+            {
+                displayAmount.bActive = false;
+            }
+        else
+        {
+            displayAmount.bActive = false;
+        }
+
         if (button.IsReleased())
         {
             if (ItemCarrier.getInst().isHastItem())

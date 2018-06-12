@@ -43,10 +43,10 @@ public class ItemComponent implements Cloneable {
         //stat.criticalChance = 10;
         //stat.blockChance = 10;
         //stat.damage = 10;
-//        if (tag == eItemTag.IT_consumable)
-//        {
-//            this.amount = amount;
-//        }
+        if (tag == eItemTag.IT_consumable)
+        {
+            stat.hp = 100;
+        }
 //        this.amount = 1;
     }
 

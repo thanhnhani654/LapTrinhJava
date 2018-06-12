@@ -14,6 +14,7 @@ import Component.StatsComponent;
 import Component.AttackComponent;
 import Component.TurnBaseSystem;
 import Component.KeyTurnBase;
+import Component.LevelSystem;
 /**
  *
  * @author Nhan
@@ -28,9 +29,15 @@ public abstract class Character extends GameObject {
     AttackComponent.eAttStyle attStyle;
     public int key;
     public TurnBaseSystem turnbase;
+    public boolean attackBuff;
+    public boolean defBuff;
+    public boolean criticalbuff;
+    public LevelSystem level;
     
     public Character()
     {
+        level = new LevelSystem();
+        level.addExp(10);
         movement = new Movement(this);
         movement.setSpeed(1);
         hp = new HpComponent(this);

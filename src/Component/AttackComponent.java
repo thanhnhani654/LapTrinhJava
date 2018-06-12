@@ -163,9 +163,17 @@ public class AttackComponent {
             return;
         StatsComponent tarStats = target.getStatsComponent();
         
-        if (stats.criticalChance > 0)
+        float critChance = stats.criticalChance;
+        
+        if (character.criticalbuff)
         {
-            if (rd.nextFloat() < stats.criticalChance / 100.0f)
+            critChance *= 1.25;
+            character.criticalbuff = false;
+        }
+        
+        if (critChance > 0)
+        {
+            if (rd.nextFloat() < critChance / 100.0f)
                 doCritical = true;
         }
         
@@ -180,11 +188,29 @@ public class AttackComponent {
             damage *= 2;
         }
         
-        damage = damage - (0.5f * (tarStats.armor - stats.breakArmor));
+        if (character.attackBuff)
+        {
+            damage *= 1.25f;
+            character.attackBuff = false;
+        }
+        
+        float targetArmor = tarStats.armor;
+        if (target.defBuff)
+        {
+            targetArmor *= 1.25;
+            target.defBuff = false;
+        }
+        
+        damage = damage - (0.5f * (targetArmor - stats.breakArmor));
+        
         if (damage < 0 || doBlock)
             damage = 0;
         target.getHpComponent().doDelta((int)(-damage));
         doCritical = false;
         doBlock = false;
+        
+         if (target.getHpComponent().getHp() <= 0)
+                character.level.addExp(target.level.getCurrentExp());
+        
     }
 }

@@ -12,8 +12,12 @@ import GameObject.Gate;
 import GameObject.Enemy;
 import Component.AttackComponent;
 import java.awt.Graphics;
+import GameObject.Player;
+import UI.BottomMenu;
 
 import Utility.Tag;
+import laptrinhjava.Scene.Scene;
+import laptrinhjava.Scene.SceneManager;
 /**
  *
  * @author Nhan
@@ -72,9 +76,17 @@ public class Interaction {
             attackComp.getTarget(tempEnemy);
             attackComp.meleeAttack();
             System.out.println("doAttackkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
-            System.out.println(tempEnemy.getHpComponent().getHp());
-            
+            System.out.println("EnemyHP " + tempEnemy.getHpComponent().getHp());
             return true;
+        case T_statNPC:
+            SceneManager.getInstance().changeToSubScene(Scene.eSceneId.S_Stats);
+            BottomMenu.getInst().deActive();
+            //System.out.println("Call Stat NPC");
+            return true;
+        case T_shopNPC:
+            SceneManager.getInstance().changeToSubScene(Scene.eSceneId.S_Shop);
+            BottomMenu.getInst().deActive();
+            System.out.println("OPEN YOUR SHOP");
         }
         return false;
     }

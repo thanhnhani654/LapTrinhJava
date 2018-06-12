@@ -42,6 +42,11 @@ public class ChoseScene extends Scene {
         }
     }
     
+    public void active()
+    {
+        bActive = true;
+    }
+    
     public void Draw(Graphics g)
     {
         backGround.Draw(g);

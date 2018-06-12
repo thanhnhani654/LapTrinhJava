@@ -16,6 +16,22 @@ public class NumberComponent {
     String[] tchar;
     ImageDraw[] image;
     Int2 pos;
+
+    public void setPos(Int2 pos) {
+        this.pos = pos;
+        for (int i = 0; i< text.length(); i++)
+        {
+            image[i].setPosition((int)(pos.x + i*size.x*align), pos.y);
+        }
+    }
+    public void setPos(int x, int y) {       
+        this.pos = new Int2(x,y);
+        for (int i = 0; i< text.length(); i++)
+        {
+            image[i].setPosition((int)(pos.x + i*size.x*align), pos.y);
+        }
+    }
+    
     Int2 size;
     int length;
     float scaleX;
@@ -149,6 +165,7 @@ public class NumberComponent {
         length = text.length();
         image = new ImageDraw[length];
         tchar = new String[length];
+        size = new Int2(25,25);
         analys();
         ImageInitialize();
     }

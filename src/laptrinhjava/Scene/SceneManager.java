@@ -5,6 +5,7 @@
  */
 package laptrinhjava.Scene;
 
+import Component.GGrid;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
@@ -69,7 +70,6 @@ public class SceneManager {
             {
                 previousScene = currentScene;
                 currentScene = l;
-                System.out.println(currentScene.toString());
             }
         }
     }
@@ -139,10 +139,33 @@ public class SceneManager {
             case S_Dungeon:
                 s = new DungeonScene();
                 break;
+            case S_Stats:
+                s = new StatUpScene();
+                break;
+            case S_Shop:
+                s = new ShopScene();
             default:
                 s = null;
                 break;
         }
         return s;
     }
+    
+    public void changeToSubScene(Scene.eSceneId id)
+    {
+        if (getScene(id) != null)
+        {
+            setCurrentScene(id);
+            Scene te = getScene(id);
+            te.active();
+            System.out.println("Change To Scene " + id);
+            GGrid.getInst().deActive();
+            return;
+        }
+        createScene(id);
+        setCurrentScene(id);
+        System.out.println("Change To Scene " + id);
+        GGrid.getInst().deActive();
+    }
+   
 }

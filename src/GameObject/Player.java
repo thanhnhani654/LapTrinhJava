@@ -25,6 +25,8 @@ public class Player extends GameObject {
     Interaction interaction;
     public boolean gameStart = false;
     public boolean bActive = true;
+    public int levelDungeon;
+
     
     //ImageDraw image;
     //Movement movement;
@@ -44,6 +46,7 @@ public class Player extends GameObject {
     public Player ()
     {
         //id = 0;
+        levelDungeon = 1;
         hero = new MeleeHero();
         hero.setId(0);
         hero.setTag(Tag.eTag.T_player);

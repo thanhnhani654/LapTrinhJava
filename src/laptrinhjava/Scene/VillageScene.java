@@ -24,6 +24,8 @@ public class VillageScene extends Scene {
     BottomMenu bottomMenu;
     TopUi topUi;
     
+    StatNPC statnpc;
+    ShopNPC shopnpc;
     Wall wall1;         //need destroy
     Gate gate;          //need destroy
     
@@ -41,13 +43,22 @@ public class VillageScene extends Scene {
         Player.getInst().gameStart = true;
         topUi = TopUi.getInst();
         wall1 = new Wall(1,2,1);
-        gate = new Gate(6,0,2);    
+        statnpc = new StatNPC(0,3,2);
+        shopnpc = new ShopNPC(4,3,3);
+        gate = new Gate(6,0,4);    
         gate.setDownGate();
+    }
+    
+    public void active()
+    {
+        bActive = true;
     }
     
     public void destroy()
     {
         wall1.destroy();
+        statnpc.destroy();
+        shopnpc.destroy();
         gate.destroy();
     }
     
@@ -76,6 +87,8 @@ public class VillageScene extends Scene {
         
         Player.getInst().Draw(g);
         wall1.Draw(g);
+        statnpc.Draw(g);
+        shopnpc.Draw(g);
         gate.Draw(g);
         
         
