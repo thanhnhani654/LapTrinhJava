@@ -111,7 +111,7 @@ public class ShopScene extends Scene {
         InitializeStatDisplay();
         InitializeItemStatsDisplay();
         
-        GenerateItem(1);
+        GenerateItem(player.getCharacter().level.getLevel());
         if (inst == null)
             inst = this;
     }
